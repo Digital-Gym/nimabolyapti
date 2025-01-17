@@ -24,6 +24,15 @@ const handleMove = (to) => {
   refresh();
 }
 
+const getPage = () => {
+  if(userUrl.value == undefined){
+    return 1;
+  }
+
+  const url = new URL(userUrl.value);
+  return url.search.split("page=")[1];
+}
+
 const refresh = async () => {
   isLoading.value = true;
   const response = await getSome(userUrl.value);
@@ -36,6 +45,7 @@ const refresh = async () => {
   
   data.value = response.data.items;
   isLoading.value = false;
+  getPage();
 }
 
 onMounted(()=>{
@@ -48,9 +58,10 @@ onMounted(()=>{
     <div class="flex flex-col gap-8 w-4/5 lg:w-2/5 m-8">
       <h1 class="text-3xl">Repositories</h1>
       <!-- control panel -->
-      <div class="flex gap-1">
+      <div class="flex gap-1 items-center">
         <AppButton @click="handleMove('first')" :disabled="!firstUrl" color="gray">First</AppButton>
         <AppButton @click="handleMove('prev')" :disabled="!prevUrl">Prev</AppButton>
+        <p class="ml-3 mr-3 text-gray-400">{{ getPage() }}</p>
         <AppButton @click="handleMove('next')" :disabled="!nextUrl">Next</AppButton>
         <AppButton @click="handleMove('last')" :disabled="!lastUrl" color="gray">Last</AppButton>
       </div>
