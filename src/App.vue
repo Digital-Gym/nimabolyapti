@@ -70,7 +70,12 @@ onMounted(()=>{
 </script>
 
 <template>
-  <div class="w-full flex justify-center">
+  <div class="
+    w-full flex justify-center min-h-screen
+    bg-white dark:bg-gray-900
+    dark:text-white
+    "
+  >
     <div class="flex flex-col gap-8 w-4/5 lg:3/5 xl:w-2/5 m-8">
       <h1 class="text-3xl">Repositories</h1>
       <!-- control panel -->
@@ -87,7 +92,11 @@ onMounted(()=>{
           @input="onInput"
           type="text"
           placeholder="keyword"
-          class="p-2 rounded-lg w-2/5 border transition outline-blue-400"
+          class="
+          p-2 rounded-lg w-2/5 border dark:bg-gray-800
+          dark:border-blue-800 outline-none focus:outline-blue-700
+          transition
+          "
         />
       </nav>
       <!-- got data -->
@@ -102,7 +111,7 @@ onMounted(()=>{
         />
         <div
           v-if="isLoading" 
-          class="w-full h-full absolute bg-gray-50 opacity-35"
+          class="w-full h-full absolute bg-gray-50 dark:bg-gray-900 opacity-35"
         />
 
         <div class="flex gap-1">
