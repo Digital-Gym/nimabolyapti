@@ -1,5 +1,6 @@
 <script setup>
 import StarIcon from '@/components/icons/StarIcon.vue';
+import CopyIcon from './icons/CopyIcon.vue';
 import { ref, computed } from 'vue';
 
 const props = defineProps({
@@ -23,6 +24,18 @@ const isExpandable = computed(()=>{
 const toggleExpand = () => {
   isExpaded.value = !isExpaded.value;
   el.value.style.maxHeight = isExpaded.value ? 'none' : '2.5rem';
+}
+
+const copyRepo = () => {
+  const stringToCopy = `[${props.repo.name}](${props.repo.html_url}) - smth`;
+  navigator.clipboard.writeText(stringToCopy);
+}
+
+const copyOwner = () => {
+  const start = props.repo.owner.type == "User" ? '[@' : '[';
+  const stringToCopy = `${start}${props.repo.owner.login}](${props.repo.owner.html_url})`;
+  
+  navigator.clipboard.writeText(stringToCopy);
 }
 </script>
 
@@ -50,11 +63,11 @@ const toggleExpand = () => {
 
     <!-- Stars -->
     <span class="
-      absolute rounded-lg bg-blue-100 z-30 flex items-center gap-1 px-2 size-min top-3 right-3
-      dark:text-gray-800 dark:bg-blue-300 opacity-80
+      absolute rounded-lg bg-blue-100 z-30 flex items-center gap-1 px-2 size-min top-5 left-4
+      dark:text-gray-800 dark:bg-blue-400 hover:cursor-default
       "
     >
-      <StarIcon class="size-4 hover:animate-spin"/>
+      <StarIcon class="size-4"/>
       <small>{{ props.repo.stargazers_count }}</small>
     </span>
 
@@ -85,5 +98,46 @@ const toggleExpand = () => {
         ></div>
       </small>
     </div>
+
+    <div 
+      class="copy aspect-square w-10 rounded-lg flex items-center justify-center"
+      @click="copyRepo"
+      title="Copy repository"
+    >
+      <CopyIcon />
+    </div>
+
+    <div 
+      class="copy-red bg-red-500 aspect-square w-10 rounded-lg flex items-center justify-center"
+      @click="copyOwner"
+      title="Copy owner"
+    >
+      <CopyIcon />
+    </div>
+
   </div>
 </template>
+
+<style scoped>
+.copy, .copy-red {
+  align-self: center;
+}
+
+.copy {
+  background-color: rgba(59, 130, 246, 0.5);
+  color: rgb(59, 130, 246);
+}
+
+.copy:hover {
+  color: rgb(101, 160, 253);
+}
+
+.copy-red {
+  background-color: rgba(239, 68, 68, 0.5);
+  color: rgb(239, 68, 68);
+}
+
+.copy-red:hover {
+  color: rgb(242, 130, 130);
+}
+</style>
